@@ -1,0 +1,11 @@
+username = request.POST.get('username')
+pass1 = request.POST.get('pass')
+
+user = authenticate(request, ntlogin=username, password=pass1)
+
+if user is not None:
+    login(request, user)
+    return redirect('home')
+else:
+   return HttpResponse("YOUR USERNAME OR PASSWORD IS INCORRECT")
+    
