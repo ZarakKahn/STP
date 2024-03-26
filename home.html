@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'htl_logo.png' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SALES TRAVELING PORTAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<header class="border-b border-gray-300 bg-gray-200 text-black px-6 py-4 h-20">
+    <div class=" flex justify-between items-center">
+        <div class="w-40 h-15">
+            <img src="{% static 'htl_logo.png' %}" alt="htl_logo" class="cursor-pointer"> 
+        </div>
+        <div class="flex mr-auto">
+            <h1 class="font-sans font-semibold text-xl text-blue-900">SALES TRAVELING PORTAL</h1>
+          </div>
+        <nav>
+            <ul class="flex space-x-4  object-right">
+                <li><a href="#home" class="hover:underline font-sans text-xs font-semibold">DASHBOARD</a></li>
+                <nav class=" text-black ">
+                    <div class="flex items-center justify-between">
+                        <!-- Hoverable Dropdown -->
+                        <div class="relative group">
+                            <button class="text-black bg-bg-gray-50 font-sans text-xs font-semibold">
+                                REPORTS
+                            </button>
+                            <div class="hidden absolute right-0 bg-white w-40 bg-bg-gray-50 rounded-lg shadow-lg group-hover:block">
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Top Market Visitors/Area</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200">MV Detailed Report</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200">MV Status Report</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200">MVR APP Weekly Summary Report</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <li><a href="#contact" class="hover:underline font-sans text-xs font-semibold">VISIT PLANNER</a></li>
+                <li><a href="#contact" class="hover:underline font-sans text-xs font-semibold">LOCATION VIEW</a></li>
+                <li><a href="#contact" class="hover:underline font-sans text-xs font-semibold">OMC SALES</a></li>
+                <a href="{% url 'logout' %}" class="flex bg-blue-950 text-white hover:bg-blue-600 font-bold py-1 px-4 rounded">Logout</a>
+            </ul>
+        </nav>
+    </div>
+</header>
+<body class="bg-gray-50">
+
+    <div class="flex justify-center items-center h-screen">
+        <p class="text-3xl font-bold mb-36">Welcome {{request.user}}</p>
+    </div>
+    
+    <div class=" h-10 bg-blue-950 fixed inset-x-0 bottom-0">
+        <p class="font-['arial']text-justify text-gray-50 text-sm m-2">
+            © Hi-Tech Lubricants: All rights reserved. | Design By: Business Intelligence Team
+        </p>
+    </div>  
+</body>
+</html>
