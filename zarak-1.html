@@ -1,47 +1,42 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-function LoginForm() {
+const MyComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [response, setResponse] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     try {
-      const response = await axios.post('http://portal.mashitec.com/SalesWebApi/api/User1/', {
-        login: username,
-        passw: password
-      });
-
-      if (response.data.toLowerCase() === username.toLowerCase()) {
-        setMessage('Authorized');
-      } else {
-        setMessage('Not Authorized');
-      }
+      const response = await fetch(`http://portal.mashitec.com/SalesWebApi/api/User1/?login=${encodeURIComponent(username)}&passw=${encodeURIComponent(password)}`);
+      const data = await response.json();
+      setResponse(JSON.stringify(data));
     } catch (error) {
-      setMessage('Error: ' + error.message);
+      console.error('Error:', error);
     }
   };
 
   return (
     <div>
-      <h2>Login Form</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Login</button>
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Submit</button>
       </form>
-      <p id="message">{message}</p>
+      <div>
+        Response: {response}
+      </div>
     </div>
   );
-}
+};
 
-export default LoginForm;
+export default MyComponent;
