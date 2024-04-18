@@ -1,60 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Form</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+import React, { useState } from 'react';
+import axios from 'axios';
 
-<h2>Login Form</h2>
+function LoginForm() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-<form id="loginForm">
-  <div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-  </div>
-  <button type="submit">Login</button>
-</form>
-
-<p id="message"></p>
-
-<script>
-    $(document).ready(function() {
-      $('#loginForm').submit(function(event) {
-        event.preventDefault(); // Prevent the form from submitting normally
-        
-        // Get username and password from the form
-        var username = $('#username').val();
-        var password = $('#password').val();
-        
-        // Construct the URL with concatenated login and passw parameters
-        var apiUrl = 'http://portal.mashitec.com/SalesWebApi/api/User1/?login=' + encodeURIComponent(username) + '&passw=' + encodeURIComponent(password);
-        
-        // Make POST request to API
-        $.ajax({
-          type: 'POST',
-          url: apiUrl,
-          success: function(response) {
-            // Check if the response matches the username
-            if (response === username) {
-              $('#message').text('Authorized');
-            } else {
-              $('#message').text('Not Authorized');
-            }
-          },
-          error: function(xhr, status, error) {
-            $('#message').text('Error: ' + error);
-          }
-        });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    try {
+      const apiUrl = 'http://portal.mashitec.com/SalesWebApi/api/User1/';
+      const response = await axios.post(apiUrl, {
+        login: username,
+        passw: password
       });
-    });
-</script>       
+      
+      if (response.data === username) {
+        setMessage('Authorized');
+      } else {
+        setMessage('Not Authorized');
+      }
+    } catch (error) {
+      setMessage('Error: ' + error.message);
+    }
+  };
 
-</body>
-</html>
+  return (
+    <div>
+      <h2>Login Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username:</label>
+          <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <p id="message">{message}</p>
+    </div>
+  );
+}
+
+export default LoginForm;
