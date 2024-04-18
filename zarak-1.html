@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const MyComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [response, setResponse] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      const response = await fetch(`http://portal.mashitec.com/SalesWebApi/api/User1/?login=${encodeURIComponent(username)}&passw=${encodeURIComponent(password)}`);
-      const data = await response.json();
-      setResponse(JSON.stringify(data));
+      const res = await axios.get(`http://portal.mashitec.com/SalesWebApi/api/User1/?login=${encodeURIComponent(username)}&passw=${encodeURIComponent(password)}`);
+      setResponse(JSON.stringify(res.data));
     } catch (error) {
-      console.error('Error:', error);
+      setError('Error fetching data');
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -32,6 +34,7 @@ const MyComponent = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
+      {error && <div>Error: {error}</div>}
       <div>
         Response: {response}
       </div>
