@@ -3,12 +3,12 @@ try {
     `http://portal.mashitec.com/SalesWebApi/api/Gethierarchy/?num=${encodeURIComponent(num)}&role=SaleMan`,
   );
   if (result.status === 200) {
-    if (result.data && result.data.error) {
-      setMessage(result.data.error); // Assuming the error message is under 'error' key
-      setData([]);
-    } else {
+    if (result.data === num) {
       setMessage("Number Correct");
       setData(Array.isArray(result.data) ? result.data : [result.data]);
+    } else {
+      setMessage("Number Incorrect");
+      setData([]);
     }
   } else {
     setMessage("Number Incorrect");
