@@ -4,15 +4,16 @@ const fetchData = async () => {
       `http://portal.mashitec.com/SalesWebApi/api/Gethierarchy/?num=${encodeURIComponent(num)}&role=SaleMan`,
     );
     if (result.status === 200) {
-      setMessage("Number Correct");
+      if (result.data.length > 0) {
+        setMessage("Number Correct");
+        setData(result.data);
+      } else {
+        setMessage("No data found for the entered number.");
+        setData([]);
+      }
     } else {
       setMessage("Number Incorrect");
-    }
-    
-    if (Array.isArray(result.data)) {
-      setData(result.data);
-    } else {
-      setData([]); // Set data to an empty array if result.data is not an array
+      setData([]);
     }
   } catch (error) {
     setMessage("Error: " + error.msg);
