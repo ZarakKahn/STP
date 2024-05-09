@@ -1,11 +1,10 @@
-<tbody className="bg-white">
-  {data.map((item, index) => (
-    <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-      <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.SaleMan}</td>
-      <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.SaleMan_Num}</td>
-      <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.City}</td>
-      <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.DMS_Dist_Name}</td>
-      <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.offcode}</td>
-    </tr>
-  ))}
-</tbody>
+[
+    {
+        "$id": "1",
+        "SaleMan": "Habibullah",
+        "SaleMan_Num": "3038888249",
+        "City": "LEYYAH",
+        "DMS_Dist_Name": "A.A OIL  (LAYYAH)",
+        "offcode": "010043"
+    }
+]
