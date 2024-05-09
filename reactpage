@@ -1,19 +1,22 @@
-<tbody className="bg-white">
-  {Array.isArray(data) && data.length > 0 ? (
-    data.map((item, index) => (
-      <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-        <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.SaleMan}</td>
-        <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.SaleMan_Num}</td>
-        <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.City}</td>
-        <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.DMS_Dist_Name}</td>
-        <td className="px-4 py-2 border-b border-gray-200 text-sm">{item.offcode}</td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="5" className="px-4 py-2 border-b border-gray-200 text-sm text-center">
-        {message}
-      </td>
-    </tr>
-  )}
-</tbody>
+const fetchData = async () => {
+  try {
+    const result = await axios.post(
+      `http://portal.mashitec.com/SalesWebApi/api/Gethierarchy/?num=${encodeURIComponent(num)}&role=SaleMan`,
+    );
+    if (result.status === 200) {
+      if (result.data.length > 0) {
+        setMessage("Number Correct");
+        setData(result.data);
+      } else {
+        setMessage("No data found for the entered number.");
+        setData([]);
+      }
+    } else {
+      setMessage("Error: Something went wrong.");
+      setData([]);
+    }
+  } catch (error) {
+    setMessage("Error: " + error.msg);
+    setData([]);
+  }
+};
