@@ -6,16 +6,16 @@ const fetchData = async () => {
     if (result.status === 200) {
       if (result.data.length > 0) {
         setMessage("Number Correct");
-        setData(result.data);
       } else {
         setMessage("No data found for the entered number.");
-        setData([]);
       }
+      setData(result.data);
     } else {
       setMessage("Number Incorrect");
       setData([]);
     }
   } catch (error) {
     setMessage("Error: " + error.msg);
+    setData([]);
   }
 };
