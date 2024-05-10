@@ -7,18 +7,13 @@ function Logout() {
     const handleLogout = () => {
         localStorage.removeItem('email');
         localStorage.removeItem('username');
-        const token = localStorage.getItem('token');
-        console.log(token);
-        if (token) {
-            console.log('Token exists in local storage:', token);
-        } else {
-            console.log('Token does not exist in local storage');
-        }
-        navigate('/');
+        localStorage.removeItem('token'); // Remove token
+        navigate('/login'); // Redirect to login page
     };
+
     return (
         <div className="ml-2">
-            <button onClick={handleLogout} className="flex px-2 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-800 ">Logout</button>
+            <button onClick={handleLogout} className="flex px-2 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-800">Logout</button>
         </div>
     );
 }
