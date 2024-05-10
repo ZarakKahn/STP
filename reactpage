@@ -4,7 +4,7 @@ import { Route, Navigate } from 'react-router-dom';
 function ProtectedRoute({ component: Component, ...rest }) {
     const isAuthenticated = localStorage.getItem('username') && localStorage.getItem('email');
     return (
-      <Route {...rest} element={isAuthenticated ? <Component /> : <Navigate to="/login" />} />
+      <Route {...rest} element={isAuthenticated ? <Component {...rest} /> : <Navigate to="/login" />} />
     );
 }
 
