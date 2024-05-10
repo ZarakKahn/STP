@@ -1,43 +1,3 @@
-import Navbar from "./Components/Navbar";
-import LoginForm from "./Components/LoginForm";
-import Footer from "./Components/Footer";
-import Dashboard from "./Pages/Dashboard";
-import HierarchyManage from "./Pages/HierarchyManage";
-import HomeNavbar from "./Components/HomeNavbar";
-import ProtectedRoute from "./Components/ProtectedRoute";
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-
-const Main = () => {
-  const location = useLocation();
-  return (
-    <>
-      {location.pathname === '/' && <HomeNavbar />}
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <ProtectedRoute path="/dashboard" element={<Dashboard />} />
-        <ProtectedRoute path="/hierarchy" element={<HierarchyManage />} />
-      </Routes>
-      <Footer />
-    </>
-  );
-};
-
-const App = () => {
-  return (
-    <Router>
-      <Main />
-    </Router>
-  );
-};
-
-export default App;
-
-
-above is my app.jsx
-
-and below is my protectedroute component
-
 import React from 'react';
 import { Route, Navigate } from 'react-router-dom';
 
@@ -49,7 +9,3 @@ function ProtectedRoute({ component: Component, ...rest }) {
 }
 
 export default ProtectedRoute;
-
-and below is the error in my console
-
-[ProtectedRoute] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>
