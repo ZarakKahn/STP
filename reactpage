@@ -1,103 +1,21 @@
-import  { React, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PiUserCircleThin } from "react-icons/pi";
-import { IconContext } from 'react-icons';
-import { UserIcon, KeyIcon } from '@heroicons/react/16/solid';
-import background from '../Images/background.jpg';
 
-
-
-function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+function Logout() {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // Clear user session or authentication token
+    // For example, if you are using localStorage:
+    localStorage.removeItem('token');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!username.endsWith('@masgroup.org')) {
-      alert('Please enter @masgroup.org');
-      return;
-    }
-
-    const email = username.split('@')[0];
-
-    try {
-      const response = await axios.post(
-        `http://portal.mashitec.com/SalesWebApi/api/User1/?login=${encodeURIComponent(email)}&passw=${encodeURIComponent(password)}`
-      );
-      if (response.data === email) {
-        setMessage('Authorized');
-        navigate('/Dashboard');
-      } else {
-        setMessage('Username or Password Incorrect!');
-      }
-    } catch (error) {
-      setMessage('Error: ' + error.message);
-    }
+    // Redirect the user to the login page
+    navigate('/login');
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100">
-      <img src={background} alt="background" className="w-full h-full object-cover" />
-      <div className="max-w-sm w-full space-y-8 bg-gray-50 border-2 border-gray-400 absolute">
-        <div className="flex align-middle justify-center items-center">
-          <IconContext.Provider value={{ size: "150px", color: "#808080" }}>
-            <PiUserCircleThin />
-          </IconContext.Provider>
-        </div>
-        <div className="flex justify-center w-full">
-          <form onSubmit={handleSubmit} className="w-fit space-y-6">
-            <div className="flex w-full border border-gray-300 rounded-md mb-2">
-              <UserIcon className="h-5 w-5 text-gray-500 m-2" />
-              <label htmlFor="username" className="sr-only">Username:</label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email"
-              />
-            </div>
-            <div className="flex w-full border border-gray-300 rounded-md">
-              <KeyIcon className="h-5 w-5 text-gray-500 m-2" />
-              <label htmlFor="password" className="sr-only">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Login
-            </button>
-            <div class=" flex text-sm justify-center">
-              <a href="#" class="font-medium text-blue-900 hover:text-blue-500">
-                Forgot your password?
-              </a>
-            </div>
-          </form>
-        </div>
-        <p id="message" className="mt-2 text-center text-sm text-gray-600">
-          {message}
-        </p>
-      </div>
-    </div>
+    <button onClick={handleLogout}>Logout</button>
   );
-};
+}
 
-export default LoginForm;
+export default Logout;
