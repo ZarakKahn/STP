@@ -1,11 +1,34 @@
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import Navbar from "./Components/Navbar";
+import LoginForm from "./Components/LoginForm";
+import Footer from "./Components/Footer";
+import Dashboard from "./Pages/Dashboard";
+import HierarchyManage from "./Pages/HierarchyManage";
+import HomeNavbar from "./Components/HomeNavbar";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-function ProtectedRoute({ component: Component, ...rest }) {
-    const isAuthenticated = localStorage.getItem('username') && localStorage.getItem('email');
-    return (
-      <Route {...rest} element={isAuthenticated ? <Component {...rest} /> : <Navigate to="/login" />} />
-    );
-}
+const Main = () => {
+  const location = useLocation();
+  return (
+    <>
+      {location.pathname === '/' && <HomeNavbar />}
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <ProtectedRoute path="/dashboard" element={<Dashboard />} />
+        <ProtectedRoute path="/hierarchy" element={<HierarchyManage />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+};
 
-export default ProtectedRoute;
+const App = () => {
+  return (
+    <Router>
+      <Main />
+    </Router>
+  );
+};
+
+export default App;
