@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Logout() {
@@ -10,6 +10,13 @@ function Logout() {
         localStorage.removeItem('token'); // Remove token
         navigate('/login'); // Redirect to login page
     };
+
+    useEffect(() => {
+        const isAuthenticated = localStorage.getItem('username') && localStorage.getItem('email');
+        if (!isAuthenticated) {
+            navigate('/login');
+        }
+    }, [navigate]);
 
     return (
         <div className="ml-2">
