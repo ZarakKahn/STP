@@ -1,59 +1,39 @@
-import React, { Component } from 'react';
-
-class DashboardPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      loading: true,
-      error: null
-    };
-  }
-
-  componentDidMount() {
-    // Fetch data from the API
-    fetch('https://api.example.com/dashboard')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState({ data, loading: false });
-      })
-      .catch(error => {
-        this.setState({ error, loading: false });
-      });
-  }
-
-  render() {
-    const { data, loading, error } = this.state;
-
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    }
-
-    return (
-      <div>
-        <h1>Dashboard</h1>
-        <div>
-          {/* Render data from API */}
-          {data && (
-            <ul>
-              {data.map(item => (
-                <li key={item.id}>{item.name}</li>
-              ))}
-            </ul>
-          )}
+<div className="flex flex-wrap items-center p-5 bg-gray-100">
+        <div className="border-2 border-gray-400 m-2 w-64">
+          <Datepicker
+            value={value}
+            onChange={handleValueChange}
+            primaryColor={"red"}
+            showShortcuts={true}
+            placeholder={"DD-MM-YY to DD-MM-YY"}
+          />
         </div>
-      </div>
-    );
-  }
-}
+        <div className=""><p >Date Select:</p></div>
+        
+        <div className="m-2 w-60">
+          <Select
+            options={options}
+            className={dropStyle}
+          />
+          <p className="">Region:</p>
+        </div>
 
-export default DashboardPage;
+        <div className="m-2 w-60">
+          <Select
+            options={handlers}
+            className={dropStyle}
+          />
+          <p className="">Handler:</p>
+        </div>
+
+        <div className="m-2 w-60">
+          <Select
+            options={teams}
+            className={dropStyle}
+          />
+          <p className="">Team:</p>
+        </div>
+
+        <button className="m-2 w-fit h-12 flex justify-center items-center rounded-md
+   shadow-sm px-4 py-2 bg-red-700 text-white hover:bg-red-800">Search</button>
+      </div>
