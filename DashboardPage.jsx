@@ -8,14 +8,16 @@ import { FiMenu } from 'react-icons/fi';
 const Navbar = () => {
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     if (location.pathname === '/') {
         return null;
     }
+
     return (
         <>
             <header className="flex flex-col border-b border-gray-300 bg-gray-200 text-black px-6 py-4">
                 <div className="flex-grow flex justify-between items-center">
-                    <div className=" w-40 h-15">
+                    <div className="w-40 h-15">
                         <Link to="/Dashboard">
                             <img src={logo} alt="logo" />
                         </Link>
@@ -26,11 +28,11 @@ const Navbar = () => {
                     <nav className="relative">
                         <button
                             className="lg:hidden p-2"
-                            onClick={() => document.getElementById('navbar-links').classList.toggle('hidden')}
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
                         >
                             <FiMenu />
                         </button>
-                        <div id="navbar-links" className="hidden lg:flex flex-col lg:flex-row lg:space-x-3 lg:items-center">
+                        <div id="navbar-links" className={`lg:flex flex-col lg:flex-row lg:space-x-3 lg:items-center ${isMenuOpen ? 'block' : 'hidden'} lg:block`}>
                             <ul className="space-y-2 lg:space-y-0 lg:flex lg:space-x-3 object-right">
                                 <li>
                                     <Link to="/dashboard" className="text-blue-900 text-xs font-sans">
@@ -95,7 +97,6 @@ const Navbar = () => {
                         </div>
                     </nav>
                 </div>
-
             </header>
             <div className="flex justify-end space-x-1 mr-3 mb-1">
                 <UserName />
