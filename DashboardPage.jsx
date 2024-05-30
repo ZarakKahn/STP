@@ -1,109 +1,127 @@
-import React, { useState } from 'react';
-import logo from '../Images/logo.png';
-import Logout from './Logout';
-import UserName from './UserName';
-import { Link, useLocation } from 'react-router-dom';
-import { FiMenu } from 'react-icons/fi';
+import React, { useEffect, useState } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
+import Select from "react-dropdown-select";
+import RegionChart from "../Components/RegionChart";
+import Cards from "../Components/Cards";
+import TopVisitors from "../Components/TopVisitors";
+import LeastVisitors from "../Components/LeastVisitors";
+import TopVisitedArea from "../Components/TopVisitedArea";
+import TopComplaints from "../Components/TopComplaints";
 
-const Navbar = () => {
-    const location = useLocation();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    if (location.pathname === '/') {
-        return null;
-    }
+const Dashboard = () => {
+  const [value, setValue] = useState({
+    startDate: new Date(),
+    endDate: new Date().setMonth(11)
+  });
+  const options = [
+    { value: 'All', label: 'All' },
+    { value: 'Baluchistan', label: 'Baluchistan' },
+    { value: 'Central', label: 'Central' },
+    { value: 'North', label: 'North' },
+    { value: 'South', label: 'South' }
+  ];
 
-    return (
-        <>
-            <header className="flex flex-col border-b border-gray-300 bg-gray-200 text-black px-6 py-4">
-                <div className="flex-grow flex justify-between items-center">
-                    <div className="w-40 h-15">
-                        <Link to="/Dashboard">
-                            <img src={logo} alt="logo" />
-                        </Link>
-                    </div>
-                    <div className="relative flex justify-start mr-auto mb-2 sm:mb-0">
-                        <h1 className="font-sans text-xl text-red-800 ml-16">SALES TRAVELING PORTAL</h1>
-                    </div>
-                    <nav className="relative">
-                        <button
-                            className="lg:hidden p-2"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        >
-                            <FiMenu />
-                        </button>
-                        <div id="navbar-links" className={`lg:flex flex-col lg:flex-row lg:space-x-3 lg:items-center ${isMenuOpen ? 'block' : 'hidden'} lg:block`}>
-                            <ul className="space-y-2 lg:space-y-0 lg:flex lg:space-x-3 object-right">
-                                <li>
-                                    <Link to="/dashboard" className="text-blue-900 text-xs font-sans">
-                                        DASHBOARD
-                                    </Link>
-                                </li>
-                                <div className="group relative">
-                                    <button className="text-blue-900 text-xs font-sans">REPORTS</button>
-                                    <div className="dropdown-menu absolute hidden group-hover:block bg-blue-900">
-                                        <ul className="list-reset">
-                                            <li>
-                                                <Link
-                                                    to="/topmarketsvisits"
-                                                    className="block px-4 py-2 text-sm text-gray-50 hover:bg-blue-500"
-                                                >
-                                                    Top Market Visitors/Area
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    to="/mvdetailedreports"
-                                                    className="block px-4 py-2 text-sm text-gray-50 hover:bg-blue-500"
-                                                >
-                                                    MV Detailed Report
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    to="/mvstatusreport"
-                                                    className="block px-4 py-2 text-sm text-gray-50 hover:bg-blue-500"
-                                                >
-                                                    MV Status Report
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    to="/mvweeklyreport"
-                                                    className="block px-4 py-2 text-sm text-gray-50 hover:bg-blue-500"
-                                                >
-                                                    MVR APP Weekly Summary Report
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <li>
-                                    <Link to="/visitplanner" className="text-blue-900 text-xs font-sans">
-                                        VISIT PLANNER
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="locationview" className="text-blue-900 text-xs font-sans">
-                                        LOCATION VIEW
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/hierarchy" className="text-blue-900 text-xs font-sans">
-                                        HIERARCHY MANAGEMENT
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-            <div className="flex justify-end space-x-1 mr-3 mb-1">
-                <UserName />
-                <Logout />
-            </div>
-        </>
-    );
+  const handlers = [
+    { value: 'All', label: 'All' },
+    { value: 'Al-Ghani', label: 'Al-Ghani' },
+    { value: 'Al-Hassan', label: 'Al-Hassan' },
+    { value: 'Trade n Move', label: 'Trade n Move' },
+    { value: 'Horizon Associates', label: 'Horizon Associates' }
+  ];
+
+  const teams = [
+    { value: 'All', label: 'All' },
+    { value: 'ASM', label: 'ASM' },
+    { value: 'TSO', label: 'TSO' },
+  ];
+
+
+  const handleValueChange = newValue => {
+    console.log("newValue:", newValue);
+    setValue(newValue);
+  };
+
+  return (
+    <>
+      <div className="text-center h-16 bg-blue-900 border-b-4 border-red-800">
+        <h1 className="font-thin text-lg text-gray-50 py-5 tracking-widest">SALES VISITS DASHBOARD</h1>
+      </div>
+
+
+      <div className="h-auto flex flex-wrap items-center justify-center p-5 bg-gray-100 w-auto">
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Date Select:</p>
+          <div className="border-2 border-gray-400 w-full">
+            <Datepicker
+              value={value}
+              onChange={handleValueChange}
+              primaryColor={"red"}
+              showShortcuts={true}
+              placeholder={"DD-MM-YY to DD-MM-YY"}
+            />
+          </div>
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Region:</p>
+          <Select
+            options={options}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Handler:</p>
+          <Select
+            options={handlers}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Team:</p>
+          <Select
+            options={teams}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+        <div className="flex">
+          <button className="mt-5 ml-3 w-fit h-10 flex justify-center items-center
+       px-4 py-2 bg-red-700 text-white hover:bg-red-800">Search</button>
+        </div>
+        <div className="w-full border px-1 border-gray-400 mt-4"></div>
+      </div>
+      
+      {/* dashboard elements */}
+      <div className="justify-center items-center">
+      <div className="flex justify-between items-center">
+      <div className="border border-neutral-300 w-96 h-56 ml-24">
+        <RegionChart />
+      </div>
+      <div className="mr-28">
+        <Cards /></div>
+      </div>
+      <div className="flex justify-between items-center">
+      <div className="border border-neutral-300 w-96 h-56 mt-20 ml-28">
+        <TopVisitors />
+      </div>
+      <div className="border border-neutral-300 w-96 h-64 mt-20 mr-28">
+      <TopVisitedArea />
+      </div>
+      </div>
+      <div className="flex justify-between items-center">
+      <div className="border border-neutral-300 w-96 h-56 mt-20 ml-28">
+        <TopComplaints />
+      </div>
+      <div className="border border-neutral-300 w-96 h-56 mt-20 mr-28">
+      <LeastVisitors />
+      </div>
+      </div>
+      </div>
+    </>
+
+  );
 };
 
-export default Navbar;
+export default Dashboard;
