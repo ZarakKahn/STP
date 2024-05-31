@@ -1,21 +1,39 @@
-// PieChart.jsx
 import React from 'react';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const PieChart = ({ data }) => {
-  // Here you would use a chart library like Chart.js, Recharts, etc.
-  // This is a placeholder for the actual chart implementation
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AA336A', '#334488'];
+
+const CustomPieChart = ({ data }) => {
+  const processedData = data.map(item => ({
+    name: item.Region,
+    value: item.Sale
+  }));
+
   return (
-    <div>
-      <h2>Pie Chart</h2>
-      {/* Map through data and render chart */}
-      {data.map((item) => (
-        <div key={item.$id}>
-          <p>Region: {item.Region}</p>
-          <p>Sale: {item.Sale}</p>
-        </div>
-      ))}
+    <div style={{ width: '100%', height: 300 }}>
+      <h2 className="text-center text-lg font-medium my-4">Sales by Region</h2>
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie
+            data={processedData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            fill="#8884d8"
+            label
+          >
+            {processedData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 };
 
-export default PieChart;
+export default CustomPieChart;
