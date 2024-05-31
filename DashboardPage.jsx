@@ -7,6 +7,7 @@ import TopVisitors from "../Components/TopVisitors";
 import LeastVisitors from "../Components/LeastVisitors";
 import TopVisitedArea from "../Components/TopVisitedArea";
 import TopComplaints from "../Components/TopComplaints";
+import axios from "axios";
 
 
 const Dashboard = () => {
@@ -14,6 +15,23 @@ const Dashboard = () => {
     startDate: new Date(),
     endDate: new Date().setMonth(11)
   });
+    // data fetching
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://portal.mashitec.com/SalesWebApi/api/GetChartData/?from=05/01/2024&to=05/29/2024&region=ALL&subreg=ALL&user=asim&team=ALL');
+        console.log(response.data);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   const options = [
     { value: 'All', label: 'All' },
     { value: 'Baluchistan', label: 'Baluchistan' },
