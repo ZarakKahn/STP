@@ -115,7 +115,7 @@ const Dashboard = () => {
       <div className="justify-center items-center">
       <div className="flex justify-between items-center">
       <div className="border border-neutral-300 w-96 h-56 ml-24">
-        <RegionChart />
+        {data && <RegionChart chartData={data} />}
       </div>
       <div className="mr-28">
         <Cards /></div>
