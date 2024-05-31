@@ -1,16 +1,15 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const RegionChart = () => {
+const RegionChart = ({ chartData }) => {
+  const totalVisits = chartData.reduce((sum, region) => sum + region.Visits_Counts, 0);
+  const data = chartData.map(region => ({
+    name: region.Region,
+    value: ((region.Visits_Counts / totalVisits) * 100).toFixed(2)
+  }));
+
   return (
     <ResponsiveContainer width="100%" height={200}>
       <PieChart>
