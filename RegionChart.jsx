@@ -1,111 +1,215 @@
- class ApexChart extends React.Component {
-        constructor(props) {
-          super(props);
-
-          this.state = {
-          
-            series: [{
-              data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-            }],
-            options: {
-              chart: {
-                type: 'bar',
-                height: 380
-              },
-              plotOptions: {
-                bar: {
-                  barHeight: '100%',
-                  distributed: true,
-                  horizontal: true,
-                  dataLabels: {
-                    position: 'bottom'
-                  },
-                }
-              },
-              colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
-                '#f48024', '#69d2e7'
-              ],
-              dataLabels: {
-                enabled: true,
-                textAnchor: 'start',
-                style: {
-                  colors: ['#fff']
-                },
-                formatter: function (val, opt) {
-                  return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-                },
-                offsetX: 0,
-                dropShadow: {
-                  enabled: true
-                }
-              },
-              stroke: {
-                width: 1,
-                colors: ['#fff']
-              },
-              xaxis: {
-                categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-                  'United States', 'China', 'India'
-                ],
-              },
-              yaxis: {
-                labels: {
-                  show: false
-                }
-              },
-              title: {
-                  text: 'Custom DataLabels',
-                  align: 'center',
-                  floating: true
-              },
-              subtitle: {
-                  text: 'Category Names as DataLabels inside bars',
-                  align: 'center',
-              },
-              tooltip: {
-                theme: 'dark',
-                x: {
-                  show: false
-                },
-                y: {
-                  title: {
-                    formatter: function () {
-                      return ''
-                    }
-                  }
-                }
-              }
-            },
-          
-          
-          };
-        }
-
-      
-
-        render() {
-          return (
-            <div>
-              <div id="chart">
-                <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={380} />
-              </div>
-              <div id="html-dist"></div>
-            </div>
-          );
-        }
-      }
-
-      const domContainer = document.querySelector('#app');
-      ReactDOM.render(React.createElement(ApexChart), domContainer);
-
-can i use the above code in the below code 
-
-import React from 'react'
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const TopVisitors = ({data}) => {
+  const chartData = data ? data.map(item => ({
+    name: item.Visitor_Name,
+    pv: item.Total,
+  })) : [];
   return (
-    <div>TopVisitors</div>
-  )
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart
+        width={500}
+        height={300}
+        data={chartData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+        barSize={20}
+      >
+        <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Bar dataKey="pv" fill="#8884d8" background={{ fill: '#eee' }} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
 }
 
-export default TopVisitors
+export default TopVisitors;
+
+above is my chart and below is my component in which i am using the chart but the chart data is not showing
+
+import React, { useEffect, useState } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
+import Select from "react-dropdown-select";
+import RegionChart from "../Components/RegionChart";
+import Cards from "../Components/Cards";
+import TopVisitors from "../Components/TopVisitors";
+import LeastVisitors from "../Components/LeastVisitors";
+import TopVisitedArea from "../Components/TopVisitedArea";
+import TopComplaints from "../Components/TopComplaints";
+import axios from "axios";
+
+const Dashboard = () => {
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),
+    endDate: new Date().setMonth(11)
+  });
+
+  const [dropdownValues, setDropdownValues] = useState({
+    region: 'All',
+    handler: 'All',
+    team: 'All'
+  });
+
+  const [data, setData] = useState(null);
+  const [topVisitors, setTopVisitors] = useState(null);
+    // data calling for piechart and cards
+  const getChartData = async () => {
+    const { startDate, endDate } = dateRange;
+    const { region, handler, team } = dropdownValues;
+    try {
+      const response = await axios.post(
+        `http://portal.mashitec.com/SalesWebApi/api/GetChartData/?from=${startDate}&to=${endDate}&region=${region}&subreg=ALL&user=${handler}&team=${team}`
+      );
+      console.log("Response from API:", response.data); 
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  }; 
+  // data calling for top 10 visitors
+  const getTopVisitors = async () => {
+    const { startDate, endDate } = dateRange;
+    const { region, handler, team } = dropdownValues;
+    try {
+      const response = await axios.post(
+        `http://portal.mashitec.com/SalesWebApi/api/Gettopvisits/?from=${startDate}&to=${endDate}&region=${region}&subreg=ALL&user=${handler}&team=${team}`
+      );
+      console.log("Response from API:", response.data);
+      setTopVisitors(response.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  }; 
+  
+
+  const handleValueChange = newValue => {
+    console.log("newValue:", newValue);
+    setDateRange(newValue);
+  };
+
+  const handleDropdownChange = (value, field) => {
+    setDropdownValues(prevState => ({
+      ...prevState,
+      [field]: value[0].value
+    }));
+  };
+
+  const fetchData = async () => {
+    await getChartData();
+    await getTopVisitors();
+  };
+
+  return (
+    <>
+      <div className="text-center h-16 bg-blue-900 border-b-4 border-red-800">
+        <h1 className="font-thin text-lg text-gray-50 py-5 tracking-widest">SALES VISITS DASHBOARD</h1>
+      </div>
+
+      <div className="h-auto flex flex-wrap items-center justify-center p-5 bg-gray-100 w-auto">
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Date Select:</p>
+          <div className="border-2 border-gray-400 w-full">
+            <Datepicker
+              value={dateRange}
+              onChange={handleValueChange}
+              primaryColor={"red"}
+              showShortcuts={true}
+              placeholder={"DD-MM-YY to DD-MM-YY"}
+            />
+          </div>
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Region:</p>
+          <Select
+            options={[
+              { value: 'All', label: 'All' },
+              { value: 'Baluchistan', label: 'Baluchistan' },
+              { value: 'Central', label: 'Central' },
+              { value: 'North', label: 'North' },
+              { value: 'South', label: 'South' }
+            ]}
+            onChange={(value) => handleDropdownChange(value, 'region')}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Handler:</p>
+          <Select
+            options={[
+              { value: 'All', label: 'All' },
+              { value: 'Al-Ghani', label: 'Al-Ghani' },
+              { value: 'Al-Hassan', label: 'Al-Hassan' },
+              { value: 'Trade n Move', label: 'Trade n Move' },
+              { value: 'Horizon Associates', label: 'Horizon Associates' }
+            ]}
+            onChange={(value) => handleDropdownChange(value, 'handler')}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+
+        <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
+          <p className="mb-1 text-center">Team:</p>
+          <Select
+            options={[
+              { value: 'All', label: 'All' },
+              { value: 'ASM', label: 'ASM' },
+              { value: 'TSO', label: 'TSO' },
+            ]}
+            onChange={(value) => handleDropdownChange(value, 'team')}
+            className="w-full p-2 border-2 border-gray-400 rounded-md"
+          />
+        </div>
+        <div className="flex">
+          <button
+            className="mt-5 ml-3 w-fit h-10 flex justify-center items-center px-4 py-2 bg-red-700 text-white hover:bg-red-800"
+            onClick={fetchData}
+          >
+            Search
+          </button>
+        </div>
+        <div className="w-full border px-1 border-gray-400 mt-4"></div>
+      </div>
+      
+      {/* dashboard elements */}
+      <div className="justify-center items-center">
+        <div className="flex justify-between items-center">
+          <div className="w-auto h-auto ml-24 mb-28">
+            {data && <RegionChart data={data} />}
+          </div>
+          <div className="mr-24 mb-28">
+            <Cards data={data} />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="border border-neutral-300 w-auto h-auto mt-20 ml-28">
+            <h1 className="text-red-900">TOP VISITORS</h1>
+            <TopVisitors data={topVisitors} />
+          </div>
+          <div className="border border-neutral-300 w-96 h-64 mt-20 mr-28">
+            <LeastVisitors data={data} />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="border border-neutral-300 w-96 h-56 mt-20 ml-28">
+            <TopComplaints data={data} />
+          </div>
+          <div className="border border-neutral-300 w-96 h-56 mt-20 mr-28">
+          <TopVisitedArea data={data} />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Dashboard;
