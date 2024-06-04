@@ -1,34 +1,111 @@
-import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+ class ApexChart extends React.Component {
+        constructor(props) {
+          super(props);
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+          this.state = {
+          
+            series: [{
+              data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+            }],
+            options: {
+              chart: {
+                type: 'bar',
+                height: 380
+              },
+              plotOptions: {
+                bar: {
+                  barHeight: '100%',
+                  distributed: true,
+                  horizontal: true,
+                  dataLabels: {
+                    position: 'bottom'
+                  },
+                }
+              },
+              colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
+                '#f48024', '#69d2e7'
+              ],
+              dataLabels: {
+                enabled: true,
+                textAnchor: 'start',
+                style: {
+                  colors: ['#fff']
+                },
+                formatter: function (val, opt) {
+                  return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+                },
+                offsetX: 0,
+                dropShadow: {
+                  enabled: true
+                }
+              },
+              stroke: {
+                width: 1,
+                colors: ['#fff']
+              },
+              xaxis: {
+                categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+                  'United States', 'China', 'India'
+                ],
+              },
+              yaxis: {
+                labels: {
+                  show: false
+                }
+              },
+              title: {
+                  text: 'Custom DataLabels',
+                  align: 'center',
+                  floating: true
+              },
+              subtitle: {
+                  text: 'Category Names as DataLabels inside bars',
+                  align: 'center',
+              },
+              tooltip: {
+                theme: 'dark',
+                x: {
+                  show: false
+                },
+                y: {
+                  title: {
+                    formatter: function () {
+                      return ''
+                    }
+                  }
+                }
+              }
+            },
+          
+          
+          };
+        }
 
-const RegionChart = ({ chartData }) => {
-  const totalVisits = chartData.reduce((sum, region) => sum + region.Visits_Counts, 0);
-  const data = chartData.map(region => ({
-    name: region.Region,
-    value: ((region.Visits_Counts / totalVisits) * 100).toFixed(2)
-  }));
+      
 
+        render() {
+          return (
+            <div>
+              <div id="chart">
+                <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={380} />
+              </div>
+              <div id="html-dist"></div>
+            </div>
+          );
+        }
+      }
+
+      const domContainer = document.querySelector('#app');
+      ReactDOM.render(React.createElement(ApexChart), domContainer);
+
+can i use the above code in the below code 
+
+import React from 'react'
+
+const TopVisitors = ({data}) => {
   return (
-    <ResponsiveContainer width="100%" height={200}>
-      <PieChart>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  );
-};
+    <div>TopVisitors</div>
+  )
+}
 
-export default RegionChart;
+export default TopVisitors
