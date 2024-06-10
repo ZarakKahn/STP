@@ -29,20 +29,23 @@ const Dashboard = () => {
   const user = localStorage.getItem('email');
   const [handlerOption , setHandlerOption] = useState([]);
   const [selectedHandler, setSelectedHandler] = useState('All');
-  // api call for handlers
+
+  // API call for handlers
   const getHandlers = async () => {
     try {
       const response = await axios.post(`http://portal.mashitec.com/SalesWebApi/api/GetHandler/?user=${user}&region=ALL`);
-      const options = response.data.map(handler => ({ value: handler.id, label: handler.name }));
+      const options = response.data.map(handler => ({ value: handler, label: handler }));
       setHandlerOption(options);
     } catch (error) {
-      console.error("Error fetching handlers:",error);
-    };
+      console.error("Error fetching handlers:", error);
+    }
   };
+
   useEffect(() => {
-    getHandlers();},[])
-  
-  // data calling for piechart and cards
+    getHandlers();
+  }, []);
+
+  // Data calling for pie chart and cards
   const getChartData = async () => {
     const { startDate, endDate } = dateRange;
     const { region, handler, team } = dropdownValues;
@@ -56,7 +59,8 @@ const Dashboard = () => {
       console.error('Error fetching data: ', error);
     }
   };
-  // data calling for top 10 visitors
+
+  // Data calling for top 10 visitors
   const getTopVisitors = async () => {
     const { startDate, endDate } = dateRange;
     const { region, handler, team } = dropdownValues;
@@ -71,7 +75,7 @@ const Dashboard = () => {
     }
   };
 
-  // least visitors
+  // Least visitors
   const getLeastVisitors = async () => {
     const { startDate, endDate } = dateRange;
     const { region, handler, team } = dropdownValues;
@@ -85,6 +89,7 @@ const Dashboard = () => {
       console.error('Error fetching data: ', error);
     }
   };
+
   // Top visited areas
   const getTopAreas = async () => {
     const { startDate, endDate } = dateRange;
@@ -99,6 +104,7 @@ const Dashboard = () => {
       console.error('Error fetching data: ', error);
     }
   };
+
   // Top complaints
   const getTopComplaints = async () => {
     const { startDate, endDate } = dateRange;
@@ -119,12 +125,11 @@ const Dashboard = () => {
     setDateRange(newValue);
   };
 
-  const handleDropdownChange = (selectedOption ,value, field) => {
+  const handleDropdownChange = (selectedOption, field) => {
     setDropdownValues(prevState => ({
       ...prevState,
-      [field]: value[0].value
+      [field]: selectedOption[0].value
     }));
-    setSelectedHandler(selectedOption.value);
   };
 
   const fetchData = async () => {
@@ -173,8 +178,8 @@ const Dashboard = () => {
         <div className="w-auto sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2">
           <p className="mb-1 text-center">Handler:</p>
           <Select
-          options={handlerOption}
-            onChange={handleDropdownChange}
+            options={handlerOption}
+            onChange={(value) => handleDropdownChange(value, 'handler')}
             value={handlerOption.find(option => option.value === selectedHandler)}
             className="w-full h-auto text-sm border-2 border-gray-400 rounded-md"
           />
@@ -192,59 +197,4 @@ const Dashboard = () => {
             className="w-full text-sm border-2 border-gray-400 rounded-md"
           />
         </div>
-        <div className="flex">
-          <button
-            className="mt-5 ml-3 w-fit h-10 flex justify-center items-center px-4 py-2 bg-red-700 text-white hover:bg-red-800"
-            onClick={fetchData}
-          >
-            Search
-          </button>
-        </div>
-        <div className="w-full border px-1 border-gray-400 mt-4"></div>
-      </div>
-
-      {/* dashboard elements */}
-      <div className="flex flex-col justify-center items-center bg-gray-100 min-h-screen">
-        <div className="flex justify-between items-center w-full max-w-screen-xl">
-          <div className="bg-white shadow-md rounded-md w-2/6 ml-32">
-            {data && <RegionChart data={data} />}
-          </div>
-          <div className="mr-24">
-            <Cards data={data} title="NATIONWIDE BUSINESS INSIGHTS" />
-          </div>
-        </div>
-        <div className="flex justify-between items-center w-full max-w-screen-xl mt-5">
-          <div className="bg-white shadow-md rounded-md w-2/5 h-auto ml-32">
-            {topVisitors && <TopVisitors topVisitors={topVisitors} title="TOP VISITORS" />}
-          </div>
-          <div className="bg-white shadow-md rounded-md w-2/5 h-auto mr-28">
-            {leastVisitors && <LeastVisitors leastVisitors={leastVisitors} title="LEAST VISITORS" />}
-          </div>
-        </div>
-        <div className="flex justify-between items-center w-full max-w-screen-xl mt-5">
-          <div className="bg-white shadow-md rounded-md w-2/5 h-auto ml-32">
-            {topComplaints && <TopComplaints topComplaints={topComplaints} title="TOP COMPLAINTS" />}
-          </div>
-          <div className="bg-white shadow-md rounded-md w-2/5 h-auto mr-28">
-            {topVisitedAreas && <TopVisitedArea topVisitedAreas={topVisitedAreas} title="TOP VISITED AREAS" />}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Dashboard;a
-
-i want to populate the handler select component with the response from getHandler function
-below is API response from hetHandler function
-[
-    "AL GHANI LUBRICANTS-HANDLER",
-    "AL HASSAN TRADERS",
-    "AZEEM AGENCIES",
-    "BUSINESS INTELLIGENCE HANDLER (NEW)",
-    "DYNAMIC ENTERPRISES",
-    "HORIZON ASSOCIATES",
-    "TOPLINK ENTERPRISES",
-    "TRADE N MOVE (PRIVATE) LIMITED"
-]
+        <div className="flex
