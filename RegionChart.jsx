@@ -1,67 +1,63 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from "./Components/Navbar";
-import LoginForm from "./Components/LoginForm";
-import Footer from "./Components/Footer";
-import Dashboard from "./Pages/Dashboard";
-import HierarchyManage from "./Pages/HierarchyManage";
-import TopMarketsVisits from "./Pages/TopMarketsVisits";
-import MvDetailedReport from "./Pages/MvDetailedReport";
-import MvStatusReport from "./Pages/MvStatusReport";
-import MvWeeklyReport from "./Pages/MvWeeklyReport";
-import LocationView from "./Pages/LocationView";
-import VisitPlanner from "./Pages/VisitPlanner";
-import DistributorView from "./Pages/DistributorView";
+<HomeNavbar />
+      <div className="relative flex flex-col items-center justify-center bg-gray-100 overflow-auto">
+        <div className="absolute w-full h-full">
+          <img className="object-cover w-full h-full" src={background} alt="background" />
+        </div>
+        <div className="bg-gray-50 border-2 border-gray-400 p-5 z-10 relative">
+          <div className="flex justify-center w-full">
+            <IconContext.Provider value={{ size: "150px", color: "#808080" }}>
+              <PiUserCircleThin />
+            </IconContext.Provider>
+          </div>
+          <div className="flex justify-center w-full">
+            <form onSubmit={handleSubmit} className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 2xl:w-1/4 space-y-6">
+              <div className="flex w-full border border-gray-300 rounded-md mb-2">
+                <HiUserCircle className="h-5 w-5 text-gray-500 m-2" />
+                <label htmlFor="username" className="sr-only">Username:</label>
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Email" autoComplete="current-password"
+                />
+              </div>
+              <div className="flex w-full border border-gray-300 rounded-md">
+                <HiKey className="h-5 w-5 text-gray-500 m-2" />
+                <label htmlFor="password" className="sr-only">Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Password"
+                />
+              </div>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Login
+              </button>
+              <div className="flex text-sm justify-center">
+                <Link to="/changepassword" className="font-medium text-blue-900 hover:text-blue-500">
+                  Change Password
+                </Link>
+              </div>
+            </form>
+          </div>
 
-const Main = () => {
-  const location = useLocation();
-  return (
-    <>
-      <Navbar />
-      <div className="flex-grow">
-        <Routes>
-          <Route index element={<LoginForm />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/hierarchymanage" element={<HierarchyManage />} />
-          <Route path="/topmarketsvisits" element={<TopMarketsVisits />} />
-          <Route path="/mvdetailedreports" element={<MvDetailedReport />} />
-          <Route path="/mvstatusreports" element={<MvStatusReport />} />
-          <Route path="/mvweeklyreports" element={<MvWeeklyReport />} />
-          <Route path="/distributorview" element={<DistributorView />} />
-          <Route path="/visitplanner" element={<VisitPlanner />} />
-          <Route path="/locationview" element={<LocationView />} />
-        </Routes>
+          <ToastContainer containerId='D' />
+        </div>
       </div>
-      {location.pathname !== '/' && <Footer />}
-    </>
-  );
-};
 
-const App = () => {
-  return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Main />
-      </div>
-    </Router>
-  );
-};
+      <HomeFooter />
 
-export default App;
-import React from 'react';
-
-const Footer = () => {
-  return (
-    <div className="w-full">
-      <div className="h-9 bg-gradient-to-br from-blue-900 to-blue-500"></div>
-      <div className="h-16 bg-gradient-to-br from-red-900 to-red-500"></div>
-      <div className="h-9 bg-gradient-to-br from-gray-800 to-gray-500">
-        <p className="text-gray-50 text-xs font-verdana ml-20 pt-2">
-          © Hi-Tech Lubricants: All rights reserved. | Designed By: Business Intelligence Team
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default Footer;
+        my second problems is here, the above code is my login page with homenavbar homefooter and the main body has a background image on top of the image is the login form 
+the problem is with the login form its ontop of the bg image i want to mnake the form responsive for sm, md,lg,xl,and 2xl screens.
