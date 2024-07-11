@@ -1,58 +1,70 @@
-<div className="flex items-center justify-center min-h-screen bg-gray-200">
-  <div className="bg-white shadow-md rounded-lg overflow-hidden w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 2xl:w-1/4">
-    <div className="relative">
-      <img className="w-full h-40 object-cover" src={background} alt="background" />
-      <div className="absolute inset-0 bg-gray-900 opacity-25"></div>
-    </div>
-    <div className="p-5">
-      <div className="flex justify-center">
-        <IconContext.Provider value={{ size: "150px", color: "#3182ce" }}>
-          <PiUserCircleThin />
-        </IconContext.Provider>
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex items-center border border-gray-300 rounded-md">
-          <HiUserCircle className="h-5 w-5 text-gray-500 m-2" />
-          <label htmlFor="username" className="sr-only">Username:</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Email"
-            autoComplete="username"
-          />
-        </div>
-        <div className="flex items-center border border-gray-300 rounded-md">
-          <HiKey className="h-5 w-5 text-gray-500 m-2" />
-          <label htmlFor="password" className="sr-only">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
-            autoComplete="current-password"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Login
-        </button>
-        <div className="flex justify-center">
-          <Link to="/changepassword" className="text-blue-500 hover:text-blue-700">
-            Change Password
-          </Link>
-        </div>
-      </form>
-    </div>
+<div className="relative flex flex-col items-center justify-center bg-gray-100 min-h-screen overflow-auto">
+  {/* Background Image */}
+  <div className="absolute inset-0 z-0">
+    <img className="absolute inset-0 object-cover w-full h-full" src={background} alt="background" />
+    <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay for contrast */}
   </div>
+
+  {/* Form Container */}
+  <div className="bg-white border-2 border-gray-400 p-5 z-10 max-w-md w-full md:w-3/4 lg:w-2/3 xl:w-1/2 rounded-lg shadow-lg">
+    <div className="flex justify-center mb-8">
+      {/* User Icon */}
+      <IconContext.Provider value={{ size: "150px", color: "#808080" }}>
+        <PiUserCircleThin />
+      </IconContext.Provider>
+    </div>
+
+    {/* Form */}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Username Field */}
+      <div className="flex border border-gray-300 rounded-md mb-4">
+        <HiUserCircle className="h-5 w-5 text-gray-500 m-2" />
+        <label htmlFor="username" className="sr-only">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+          placeholder="Username"
+        />
+      </div>
+
+      {/* Password Field */}
+      <div className="flex border border-gray-300 rounded-md mb-4">
+        <HiKey className="h-5 w-5 text-gray-500 m-2" />
+        <label htmlFor="password" className="sr-only">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+          placeholder="Password"
+        />
+      </div>
+
+      {/* Login Button */}
+      <button
+        type="submit"
+        className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        Login
+      </button>
+
+      {/* Change Password Link */}
+      <div className="flex justify-center text-sm">
+        <Link to="/changepassword" className="font-medium text-blue-900 hover:text-blue-500">
+          Change Password
+        </Link>
+      </div>
+    </form>
+  </div>
+
+  {/* Toast Container for Notifications */}
+  <ToastContainer containerId='D' />
 </div>
