@@ -1,16 +1,38 @@
-<HomeNavbar />
-      <div className="relative flex flex-col items-center justify-center bg-gray-100 overflow-auto">
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { IconContext } from 'react-icons';
+import { PiUserCircleThin } from 'react-icons/pi';
+import { HiUserCircle, HiKey } from 'react-icons/hi';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import HomeNavbar from './HomeNavbar';
+import HomeFooter from './HomeFooter';
+import background from './path/to/background.jpg'; // Ensure this path is correct
+
+const Login = () => {
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <HomeNavbar />
+      <div className="relative flex flex-col items-center justify-center flex-grow bg-gray-100 overflow-auto">
         <div className="absolute w-full h-full">
           <img className="object-cover w-full h-full" src={background} alt="background" />
         </div>
-        <div className="bg-gray-50 border-2 border-gray-400 p-5 z-10 relative">
+        <div className="bg-gray-50 border-2 border-gray-400 p-5 z-10 relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto">
           <div className="flex justify-center w-full">
             <IconContext.Provider value={{ size: "150px", color: "#808080" }}>
               <PiUserCircleThin />
             </IconContext.Provider>
           </div>
           <div className="flex justify-center w-full">
-            <form onSubmit={handleSubmit} className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 2xl:w-1/4 space-y-6">
+            <form onSubmit={handleSubmit} className="w-full space-y-6">
               <div className="flex w-full border border-gray-300 rounded-md mb-2">
                 <HiUserCircle className="h-5 w-5 text-gray-500 m-2" />
                 <label htmlFor="username" className="sr-only">Username:</label>
@@ -52,12 +74,12 @@
               </div>
             </form>
           </div>
-
           <ToastContainer containerId='D' />
         </div>
       </div>
-
       <HomeFooter />
+    </div>
+  );
+};
 
-        my second problems is here, the above code is my login page with homenavbar homefooter and the main body has a background image on top of the image is the login form 
-the problem is with the login form its ontop of the bg image i want to mnake the form responsive for sm, md,lg,xl,and 2xl screens.
+export default Login;
