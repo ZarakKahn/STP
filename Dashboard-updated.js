@@ -8,7 +8,21 @@
       showShortcuts={true}
       placeholder={"DD-MM-YY to DD-MM-YY"}
       portal={true}
-      containerClassName="absolute bottom-0 left-0 z-50 md:top-full md:bottom-auto"
+      popperPlacement="bottom"  // Ensures the dropdown opens downwards
+      popperProps={{
+        modifiers: [
+          {
+            name: 'preventOverflow',
+            options: {
+              boundary: 'viewport',
+            },
+          },
+          {
+            name: 'flip',
+            enabled: false,  // Prevent flipping upwards
+          },
+        ],
+      }}
     />
   </div>
 </div>
